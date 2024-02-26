@@ -1,0 +1,74 @@
+desc:0eq00 Sostenuto Pedal
+//tags: MIDI processing
+
+in_pin:none
+out_pin:none
+
+@init
+keyOn=0;
+i=0;
+loop(128,
+  keyOn[i] = 0;
+  i+=1;
+);
+sosOn=200;
+i=0;
+loop(128,
+  sosOn[i] = 0;
+  i+=1;
+);
+
+
+@block
+while (
+midirecv(ts,msg1,msg23) ? 
+(
+  m=msg1&240;
+  vel=(msg23/256)|0;
+  note=msg23&127;
+  skip=0;
+
+  // sostenuto pedal on
+  m == 0xB0 && note == 66 && vel >= 64 ?
+  (
+    skip=1;
+    i=0;
+    loop(128,
+      sosOn[i] = keyOn[i];
+      i+=1;
+    );
+  );
+
+  // sostenuto pedal off
+  m == 0xB0 && note == 66 && vel < 64 ?
+  (
+    skip=1;
+    i=0;
+    loop(128,
+      sosOn[i] == 1 && keyOn[i] == 0 ?
+      (
+        midisend(ts,0x80+(msg1&0x0F),i,0);
+      );
+      sosOn[i] = 0;
+      i+=1;
+    );
+  );
+
+  // note on
+  m == 0x90 && vel >= 1 ?
+  (
+    keyOn[note] = 1;
+  );
+
+  // note off
+  m == 0x80 || ( m == 0x90 && vel == 0 ) ?
+  (
+    keyOn[note] = 0;
+    sosOn[note] == 1 ? skip = 1;
+  );
+
+  skip == 0 ?  midisend(ts,msg1,msg23);
+
+  bla=1;
+);
+);
