@@ -3,7 +3,7 @@
 <JUCERPROJECT id="TCbT1h" name="SostenutoPedal" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
               companyName="0eq00" companyWebsite="https://github.com/0eq00"
-              pluginFormats="buildVST3" pluginCharacteristicsValue="pluginIsMidiEffectPlugin,pluginProducesMidiOut,pluginWantsMidiIn">
+              pluginFormats="buildVST3" pluginCharacteristicsValue="pluginIsMidiEffectPlugin,pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn">
   <MAINGROUP id="jDhgZN" name="SostenutoPedal">
     <GROUP id="{6E292CC9-6540-2E05-6ACD-57992D914FC1}" name="Source">
       <FILE id="B8obW9" name="PluginProcessor.cpp" compile="1" resource="0"
